@@ -69,6 +69,16 @@ ffhq_256.skip_threshold = 180.
 HPARAMS_REGISTRY['ffhq256'] = ffhq_256
 
 
+celeba128 = Hyperparams()
+celeba128.update(ffhq_256)
+celeba128.n_batch = 4
+celeba128.lr = 0.00007
+celeba128.dataset = 'celeba128'
+celeba128.dec_blocks = "1x2,4m1,4x3,8m4,8x4,16m8,16x9,32m16,32x21,64m32,64x13,128m64"
+celeba128.enc_blocks = "128x8,128d2,64x12,64d2,32x17,32d2,16x7,16d2,8x5,8d2,4x5,4d4,1x4"
+HPARAMS_REGISTRY['celeba128'] = celeba128
+
+
 ffhq1024 = Hyperparams()
 ffhq1024.update(ffhq_256)
 ffhq1024.dataset = 'ffhq_1024'

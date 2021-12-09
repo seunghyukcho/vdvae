@@ -43,6 +43,14 @@ def set_up_data(H):
         H.image_channels = 3
         shift = -120.63838
         scale = 1. / 64.16736
+    elif H.dataset == 'celeba128':
+        trX, vaX, teX = celeba128(H.data_root)
+        H.image_size = 128
+        H.image_channels = 3
+        shift = -0.4381548894444708
+        scale = 1 / 0.2999871084397634
+        shift_loss = -0.5
+        scale_loss = 2.0
     else:
         raise ValueError('unknown dataset: ', H.dataset)
 
@@ -59,7 +67,7 @@ def set_up_data(H):
     shift_loss = torch.tensor([shift_loss]).cuda().view(1, 1, 1, 1)
     scale_loss = torch.tensor([scale_loss]).cuda().view(1, 1, 1, 1)
 
-    if H.dataset == 'ffhq_1024':
+    if H.dataset == 'ffhq_1024' or H.dataset == 'celeba128':
         train_data = ImageFolder(trX, transforms.ToTensor())
         valid_data = ImageFolder(eval_dataset, transforms.ToTensor())
         untranspose = True
@@ -130,6 +138,11 @@ def imagenet64(data_root):
 def ffhq1024(data_root):
     # we did not significantly tune hyperparameters on ffhq-1024, and so simply evaluate on the test set
     return os.path.join(data_root, 'ffhq1024/train'), os.path.join(data_root, 'ffhq1024/valid'), os.path.join(data_root, 'ffhq1024/valid')
+
+
+def celeba128(data_root):
+    # we did not significantly tune hyperparameters on ffhq-1024, and so simply evaluate on the test set
+    return os.path.join(data_root, 'celeba128/train'), os.path.join(data_root, 'celeba128/valid'), os.path.join(data_root, 'celeba128/valid')
 
 
 def ffhq256(data_root):

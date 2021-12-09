@@ -43,7 +43,7 @@ def eval_step(data_input, target, ema_vae):
 def get_sample_for_visualization(data, preprocess_fn, num, dataset):
     for x in DataLoader(data, batch_size=num):
         break
-    orig_image = (x[0] * 255.0).to(torch.uint8).permute(0, 2, 3, 1) if dataset == 'ffhq_1024' else x[0]
+    orig_image = (x[0] * 255.0).to(torch.uint8).permute(0, 2, 3, 1) if dataset == 'celeba128' else x[0]
     preprocessed = preprocess_fn(x)[0]
     return orig_image, preprocessed
 
@@ -66,7 +66,7 @@ def train_loop(H, data_train, data_valid, preprocess_fn, vae, ema_vae, logprint)
             if iterate % H.iters_per_print == 0 or iters_since_starting in early_evals:
                 logprint(model=H.desc, type='train_loss', lr=scheduler.get_last_lr()[0], epoch=epoch, step=iterate, **accumulate_stats(stats, H.iters_per_print))
 
-            if iterate % H.iters_per_images == 0 or (iters_since_starting in early_evals and H.dataset != 'ffhq_1024') and H.rank == 0:
+            if iterate % H.iters_per_images == 0 or (iters_since_starting in early_evals and H.dataset != 'celeba128') and H.rank == 0:
                 write_images(H, ema_vae, viz_batch_original, viz_batch_processed, f'{H.save_dir}/samples-{iterate}.png', logprint)
 
             iterate += 1
